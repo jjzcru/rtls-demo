@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    expose:
+      - 6379
+    ports:
+      - '6379:6379'
+
+  publisher:
+    build: ./publisher
+    command: node app.js
+    environment:
+      - REDIS_URL=redis://redis
+    links:
+      - redis
+    depends_on: 
+      - redis
+      
+  

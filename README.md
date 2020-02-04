@@ -9,7 +9,6 @@ Also this application uses the port `8000`, `8100` and `6379`.
 Then run:
 ```
 docker-compose up -d
-
 ```
 
 You can see the application running on `http://localhost:8100`

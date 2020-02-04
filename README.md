@@ -4,11 +4,15 @@ This is a demo for running a RTTS using `docker`
 ## Running
 For running the application you need to install `docker` and `docker-compose`.
 
+Also this application uses the port `8000`, `8100` and `6379`.
+
 Then run:
 ```
 docker-compose up -d
 
 ```
+
+You can see the application running on `http://localhost:8100`
 
 ### Increasing Publisher
 To increase the amount of devices to emulate you need use the `--scale` command 

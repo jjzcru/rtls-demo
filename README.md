@@ -1,5 +1,5 @@
 ## Description
-This is a demo for running a RTTS using `docker`
+This is a demo for running a RTLS (Real-time locating system) using `docker`
 
 ## Running
 For running the application you need to install `docker` and `docker-compose`.

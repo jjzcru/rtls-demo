@@ -10,13 +10,34 @@ services:
       - '6379:6379'
 
   publisher:
-    build: ./publisher
-    command: node app.js
+    build: ./services
+    command: node publisher.js
     environment:
       - REDIS_URL=redis://redis
     links:
       - redis
     depends_on: 
       - redis
+
+  subscriber:
+    build: ./services
+    command: node subscriber.js
+    environment:
+      - REDIS_URL=redis://redis
+    links:
+      - redis
+    ports:
+     - "8000:8000"
+    depends_on: 
+      - redis
+  
+  client:
+    build: ./client
+    links:
+      - subscriber
+    depends_on: 
+      - subscriber
+    ports:
+     - "8100:80"
       
   

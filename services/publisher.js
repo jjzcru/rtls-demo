@@ -11,7 +11,7 @@ console.log(`Id: ${id}`);
 client.on('ready', function(err) {
 	setInterval(() => {
 		publish();
-	}, 2000);
+	}, 3000);
 });
 
 client.on('error', function(err) {
@@ -22,23 +22,36 @@ let latIncrease;
 let longIncrease;
 
 function publish() {
-  const increase = 0.001;
   if(!latIncrease) {
-    latIncrease = increase * getSign();
+    latIncrease = getRandomIncrease() * getSign();
   }
   if(!longIncrease) {
-    longIncrease = increase * getSign();
+    longIncrease = getRandomIncrease() * getSign();
   }
+
   position.lat = position.lat + latIncrease;
   position.long = position.long + longIncrease;
+  position.time = Date.now();
   
   console.log(`Latitude: ${position.lat} \tLongitude: ${position.long}`);
 
-  client.set(id, JSON.stringify(position));
+  client.rpush(id, JSON.stringify(position));
+  client.publish('locations', JSON.stringify({
+    id: id,
+    lat: position.lat,
+    long: position.long,
+    time: position.time
+  }));
 }
 
 function getSign() {
   return getRandomInt(0, 100) % 2 ? 1 : -1;
+}
+
+function getRandomIncrease() {
+  const min = 0.0000;
+  const max = 0.0001;
+  return Math.random() * (max - min) + min;
 }
 
 function getRandomInt(min, max) {

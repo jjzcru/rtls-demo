@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RTLS Demo</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+</head>
+<body>
+    <div id="map" style="width:900px; height:580px;">
+    
+    </div>
+    <script>
+        const host = 'localhost'; // subscriber
+        const socket = io(`http://${host}:8000`);
+        const clientsMap = new Map();
+        socket.on('location', function (data) {
+            console.log(data);
+            if(!clientsMap.get(data.id)) {
+                register(data.id, data);
+            } else {
+                updateMarker(data.id, data);
+            }
+            // socket.emit('my other event', { my: 'data' });
+        });
+
+        
+        const mapOptions = {
+            center: [8.971642952356625, -79.55633640289308],
+            zoom: 15
+        }
+        var map = new L.map('map', mapOptions);
+
+        // Creating a Layer object
+        var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+         
+         // Adding layer to the map
+        map.addLayer(layer);
+        
+        function register(id, location) {
+            delete location.id;
+            const marker = L.marker([location.lat, location.long]);
+            marker.addTo(map);
+            marker.bindPopup(id).openPopup();
+
+            clientsMap.set(id, marker);
+        }
+
+        function updateMarker(id, location) {
+            const marker = clientsMap.get(id);
+            marker.setLatLng(new L.LatLng(location.lat, location.long))
+        }
+    </script>
+</body>
+</html>

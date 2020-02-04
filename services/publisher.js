@@ -11,7 +11,7 @@ console.log(`Id: ${id}`);
 client.on('ready', function(err) {
 	setInterval(() => {
 		publish();
-	}, 2000);
+	}, 5000);
 });
 
 client.on('error', function(err) {
@@ -29,12 +29,20 @@ function publish() {
   if(!longIncrease) {
     longIncrease = increase * getSign();
   }
+
   position.lat = position.lat + latIncrease;
   position.long = position.long + longIncrease;
+  position.time = Date.now();
   
   console.log(`Latitude: ${position.lat} \tLongitude: ${position.long}`);
 
-  client.set(id, JSON.stringify(position));
+  client.rpush(id, JSON.stringify(position));
+  client.publish('locations', JSON.stringify({
+    id: id,
+    lat: position.lat,
+    long: position.long,
+    time: position.time
+  }));
 }
 
 function getSign() {

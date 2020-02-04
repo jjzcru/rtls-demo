@@ -26,7 +26,18 @@ services:
       - REDIS_URL=redis://redis
     links:
       - redis
+    ports:
+     - "8000:8000"
     depends_on: 
       - redis
+  
+  client:
+    build: ./client
+    links:
+      - subscriber
+    depends_on: 
+      - subscriber
+    ports:
+     - "8100:80"
       
   

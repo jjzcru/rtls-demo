@@ -43,4 +43,5 @@ io.on('connection', client => {
 });
 
 console.log(`SERVER LISTENING ON PORT ${port}`)
+io.origins('*:*');
 io.listen(port);

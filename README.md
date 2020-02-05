@@ -1,5 +1,5 @@
 ## Description
-This is a demo for running a RTTS using `docker`
+This is a demo for running a RTLS using `docker`
 
 ## Running
 For running the application you need to install `docker` and `docker-compose`.
@@ -9,7 +9,6 @@ Also this application uses the port `8000`, `8100` and `6379`.
 Then run:
 ```
 docker-compose up -d
-
 ```
 
 You can see the application running on `http://localhost:8100`
@@ -19,7 +18,7 @@ To increase the amount of devices to emulate you need use the `--scale` command
 from docker compose and specify the amount of devices you wish to run
 
 ```
-docker-compose up -d --scale publisher=10
+docker-compose up -d --scale device=10
 ```
 
 ## Architecture
@@ -27,8 +26,11 @@ docker-compose up -d --scale publisher=10
 ### Redis
 We are using redis as a `pub/sub` communication using channels and also storing the history of location for each `publisher`
 
+### Client
+This is a script that emulate devices sending their `latitude` and `longitude`
+
 ### Publisher
-This is a program that emulates devices sending their `latitude` and `longitude`, each service runs as a separate program and gets an random `uuid` that is used to identify each process, we send this information to `redis`
+This is a program that takes the incomming request of the devices and sends them to `redis`
 
 ### Subscriber 
 This is a program serves as a `Websocket` server and as a `subscription` to `redis`, is listening to all the locations that gets send over the `locations` channel and broadcast all those locations to the connected service.

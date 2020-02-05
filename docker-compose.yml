@@ -18,6 +18,18 @@ services:
       - redis
     depends_on: 
       - redis
+    ports:
+      - '3000:3000'
+  
+  device: 
+    build: ./services
+    command: node device.js
+    environment:
+      - HOST=publisher
+    links:
+      - publisher
+    depends_on: 
+      - publisher
 
   subscriber:
     build: ./services

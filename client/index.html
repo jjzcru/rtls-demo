@@ -40,7 +40,6 @@
         map.addLayer(layer);
         
         function register(id, location) {
-            delete location.id;
             const marker = L.marker([location.lat, location.long]);
             marker.addTo(map);
             marker.bindPopup(id).openPopup();

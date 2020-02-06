@@ -13,9 +13,9 @@ docker-compose up -d
 
 You can see the application running on `http://localhost:8100`
 
-### Increasing Publisher
+### Increase devices
 To increase the amount of devices to emulate you need use the `--scale` command 
-from docker compose and specify the amount of devices you wish to run
+from `docker-compose` and specify the amount of devices you wish to run
 
 ```
 docker-compose up -d --scale device=10
@@ -26,7 +26,7 @@ docker-compose up -d --scale device=10
 ### Redis
 We are using redis as a `pub/sub` communication using channels and also storing the history of location for each `publisher`
 
-### Client
+### Device
 This is a script that emulate devices sending their `latitude` and `longitude`
 
 ### Publisher

@@ -24,7 +24,6 @@
             } else {
                 updateMarker(data.id, data);
             }
-            // socket.emit('my other event', { my: 'data' });
         });
 
         
@@ -32,10 +31,10 @@
             center: [8.971642952356625, -79.55633640289308],
             zoom: 15
         }
-        var map = new L.map('map', mapOptions);
+        const map = new L.map('map', mapOptions);
 
         // Creating a Layer object
-        var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        const layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
          
          // Adding layer to the map
         map.addLayer(layer);

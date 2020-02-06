@@ -8,6 +8,15 @@ services:
       - 6379
     ports:
       - '6379:6379'
+  
+  publisherlb:
+    image: 'dockercloud/haproxy:latest'
+    links:
+      - publisher
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - '3000:80'
 
   publisher:
     build: ./services
@@ -18,18 +27,19 @@ services:
       - redis
     depends_on: 
       - redis
-    ports:
-      - '3000:3000'
+    expose:
+      - 3000
   
   device: 
     build: ./services
     command: node device.js
     environment:
-      - HOST=publisher
+      - HOST=publisherlb
+      - PUBLISHER_PORT=80
     links:
-      - publisher
+      - publisherlb
     depends_on: 
-      - publisher
+      - publisherlb
 
   subscriber:
     build: ./services
